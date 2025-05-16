@@ -94,7 +94,12 @@ jobs:
       #  run: |
        #   npm run e2e:headless
 
-     # Étape 4 : Exécute les tests end-to-end avec Cypress sur différents navigateurs
+        # Étape 4 : Construit le projet Next.js
+      - name: Build Next.js app
+        run: |
+          npm run build
+          
+     # Étape 5 : Exécute les tests end-to-end avec Cypress sur différents navigateurs
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
