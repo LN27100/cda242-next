@@ -111,20 +111,20 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
       # Étape 6 : Upload de la vidéo des tests Cypress
-      - name: Upload Cypress videos
-        uses: actions/upload-artifact@v4
-        if: always() 
-        with:
-          name: cypress-test-video
-          path: cypress/videos/
-          retention-days: 5
+      #- name: Upload Cypress videos
+       # uses: actions/upload-artifact@v4
+     #   if: always() 
+        #with:
+         # name: cypress-test-video
+          #path: cypress/videos/
+          #retention-days: 5
 
       # Étape 7 : Upload des screenshots des tests Cypress échoués
 
-      - name: Upload Cypress screenshots
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: cypress-test-screenshot
-          path: cypress/screenshots
-          retention-days: 5  
+      #- name: Upload Cypress screenshots
+       # uses: actions/upload-artifact@v4
+        #if: failure()
+        #with:
+         # name: cypress-test-screenshot
+          #path: cypress/screenshots
+          #retention-days: 5  
