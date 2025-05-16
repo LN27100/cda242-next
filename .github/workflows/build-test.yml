@@ -99,6 +99,8 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           browser: ${{ matrix.browser }}
+          start: npm start
+          wait-on: 'http://localhost:3000'
 
       # Étape 5 : Affiche un message indiquant le statut du job
       - run: echo "🍏 This job's status is ${{ job.status }}."
