@@ -91,3 +91,10 @@ jobs:
 
       # Étape 5 : Affiche un message indiquant le statut du job
       - run: echo "🍏 This job's status is ${{ job.status }}."
+
+    # Étape 6 : Upload de la vidéo des tests Cypress
+      - name: Upload Cypress videos
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-test-videos
+          path: cypress/videos/
