@@ -94,7 +94,7 @@ jobs:
       #  run: |
        #   npm run e2e:headless
 
-        # Étape 4 : Construit le projet Next.js
+     # Étape 4 : Construit le projet Next.js
       - name: Build Next.js app
         run: |
           npm run build
@@ -115,7 +115,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: cypress-test-videos-${{ matrix.browser }}-${{ github.run_id }}
+          name: cypress-test-videos-${{ matrix.browser }}
           path: cypress/videos/
           retention-days: 5
 
@@ -124,6 +124,6 @@ jobs:
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-test-screenshots-${{ matrix.browser }}-${{ github.run_id }}
+          name: cypress-test-screenshots-${{ matrix.browser }}
           path: cypress/screenshots
           retention-days: 5
