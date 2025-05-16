@@ -49,7 +49,8 @@ jobs:
         uses: actions/cache/save@v4  # Utilise l'action de cache pour sauvegarder le cache
         with:
           path: |
-            node_modules  # Chemin du répertoire à sauvegarder dans le cache
+            node_modules
+            /home/runner/.cache/Cypress
           key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}  # Clé unique pour identifier le cache
           # La clé est basée sur le système d'exploitation du runner et le hash du fichier package-lock.json
           # Cela permet de s'assurer que le cache est mis à jour lorsque les dépendances changent
@@ -78,19 +79,15 @@ jobs:
         uses: actions/cache/restore@v4  # Utilise l'action de cache pour restaurer le cache
         with:
           path: |
-            node_modules  # Chemin du répertoire à restaurer depuis le cache
+            node_modules
+            /home/runner/.cache/Cypress
           key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}  # Clé unique pour identifier le cache
           # Cela permet de s'assurer que le cache est restauré correctement
 
-      # Étape 4 : Effectue une installation propre des dépendances en utilisant npm ci
-      - name: Clean install dependencies
-        run: |
-          npm ci
-
-      # Étape 5 : Exécute les tests end-to-end en mode headless (sans interface graphique)
+      # Étape 4 : Exécute les tests end-to-end en mode headless (sans interface graphique)
       - name: Test
         run: |
           npm run e2e:headless
 
-      # Étape 6 : Affiche un message indiquant le statut du job
+      # Étape 5 : Affiche un message indiquant le statut du job
       - run: echo "🍏 This job's status is ${{ job.status }}."
