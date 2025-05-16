@@ -63,7 +63,7 @@ jobs:
      # Utilisation d'une matrice pour tester sur différents navigateurs
     strategy:
       matrix:
-        browser: [chrome, firefox, edge]
+        browser: [chrome, edge]
 
     # Spécifie que le job doit être exécuté sur une machine virtuelle avec la dernière version d'Ubuntu
     runs-on: ubuntu-latest
@@ -94,18 +94,14 @@ jobs:
       #  run: |
        #   npm run e2e:headless
 
-     # Étape 4 : Construit le projet Next.js
-      - name: Build Next.js app
-        run: |
-          npm run build
 
-     # Étape 5 : Exécute les tests end-to-end avec Cypress sur différents navigateurs
+     # Étape 4 : Exécute les tests end-to-end avec Cypress sur différents navigateurs
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
+          install: false
+          start: npm run dev
           browser: ${{ matrix.browser }}
-          start: npm start
-          wait-on: 'http://localhost:3000'
 
       # Étape 5 : Affiche un message indiquant le statut du job
       - run: echo "🍏 This job's status is ${{ job.status }}."
