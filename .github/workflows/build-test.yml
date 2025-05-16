@@ -1,24 +1,73 @@
+# Nom du workflow
 name: GitHub Actions Demo
+
+# Nom de l'exécution du workflow, qui inclut le nom de l'utilisateur qui a déclenché le workflow
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+
+# Événement qui déclenche le workflow, ici un push sur le dépôt
 on: [push]
+
+# Définition des jobs à exécuter
 jobs:
-  Build-and-Test:
+  # Job pour le build
+  Build:
+    # Spécifie que le job doit être exécuté sur une machine virtuelle avec la dernière version d'Ubuntu
     runs-on: ubuntu-latest
+
+    # Liste des étapes à exécuter dans le job
     steps:
+      # Étape 1 : Affiche un message indiquant que le job a été déclenché par un événement push
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+
+      # Étape 2 : Affiche un message indiquant que le job est en cours d'exécution sur un serveur Ubuntu hébergé par GitHub
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+
+      # Étape 3 : Affiche un message avec le nom de la branche et le dépôt
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+
+      # Étape 4 : Utilise l'action checkout pour cloner le dépôt sur le runner
       - name: Check out repository code
         uses: actions/checkout@v4
+
+      # Étape 5 : Affiche un message indiquant que le dépôt a été cloné sur le runner
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: Install dependencies
+
+      # Étape 6 : Effectue une installation propre des dépendances en utilisant npm ci
+      - name: Clean install dependencies
         run: |
-          npm install
+          npm ci
+
+      # Étape 7 : Construit le projet en utilisant npm
       - name: Build
         run: |
           npm run build
+
+  # Job pour les tests, qui dépend du job Build
+  Test:
+    # Ce job dépend du job Build, donc il ne s'exécute que si le job Build réussit
+    needs: Build
+
+    # Spécifie que le job doit être exécuté sur une machine virtuelle avec la dernière version d'Ubuntu
+    runs-on: ubuntu-latest
+
+    # Liste des étapes à exécuter dans le job
+    steps:
+      # Étape 1 : Affiche un message indiquant que le job de test est en cours d'exécution
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+
+      # Étape 2 : Utilise l'action checkout pour cloner le dépôt sur le runner
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      # Étape 3 : Effectue une installation propre des dépendances en utilisant npm ci
+      - name: Clean install dependencies
+        run: |
+          npm ci
+
+      # Étape 4 : Exécute les tests end-to-end en mode headless (sans interface graphique)
       - name: Test
         run: |
           npm run e2e:headless
+
+      # Étape 5 : Affiche un message indiquant le statut du job
       - run: echo "🍏 This job's status is ${{ job.status }}."
