@@ -60,6 +60,11 @@ jobs:
     # Ce job dépend du job Build, donc il ne s'exécute que si le job Build réussit
     needs: Build
 
+     # Utilisation d'une matrice pour tester sur différents navigateurs
+    strategy:
+      matrix:
+        browser: [chrome, firefox, edge]
+
     # Spécifie que le job doit être exécuté sur une machine virtuelle avec la dernière version d'Ubuntu
     runs-on: ubuntu-latest
 
@@ -84,10 +89,16 @@ jobs:
           key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}  # Clé unique pour identifier le cache
           # Cela permet de s'assurer que le cache est restauré correctement
 
-      # Étape 4 : Exécute les tests end-to-end en mode headless (sans interface graphique)
-      - name: Test
-        run: |
-          npm run e2e:headless
+      ## Étape 4 : Exécute les tests end-to-end en mode headless (sans interface graphique)
+      #- name: Test
+      #  run: |
+       #   npm run e2e:headless
+
+     # Étape 4 : Exécute les tests end-to-end avec Cypress sur différents navigateurs
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          browser: ${{ matrix.browser }}
 
       # Étape 5 : Affiche un message indiquant le statut du job
       - run: echo "🍏 This job's status is ${{ job.status }}."
